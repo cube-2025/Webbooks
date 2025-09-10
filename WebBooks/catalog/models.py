@@ -4,7 +4,7 @@ from django.urls import reverse
 class Genre(models.Model):
     name = models.CharField(max_length=200,
                             help_text='Введите жанр книги',
-                            varbose_name='Жанр книги')
+                            verbose_name='Жанр книги')
     def __str__(self):
         return self.name
 
@@ -67,3 +67,45 @@ class Book(models.Model):
     isbn = models.CharField(max_length=13,
                             help_text='Должно содержать 13 символов',
                             verbose_name='ISBN книги')
+    price = models.DecimalField(decimal_places=2, max_digits=7,
+                                help_text='Введите цену книги',
+                                verbose_name='Цена (руб.)')
+    photo = models.ImageField(upload_to='images',
+                              help_text='Введите изображение обложки',
+                              verbose_name='Изображение обложки')
+    def __str__(self):
+        return self.title
+    def get_absolute_url(self):
+        return reverse('book-detail', args=[str(self.id)])
+
+class Status(models.Model):
+    name = models.CharField(max_length=20,
+                            help_text='Введите статус книги',
+                            verbose_name='Статус экземпляра книги')
+    def __str__(self):
+        return self.name
+
+class BookInstance(models.Model):
+    book = models.ForeignKey('Book', on_delete=models.CASCADE,
+                             null=True)
+    inv_nom= models.CharField(
+        max_length=20,
+        null=True,
+        help_text='введите инвентарный номер книги',
+        verbose_name='Инвентарный номер'
+    )
+    status = models.ForeignKey('Status', on_delete=models.CASCADE,
+                             null=True, blank=True,
+                               help_text='Изменить состояние книги',
+                               verbose_name='Статус экзепляра книги')
+    due_back = models.DateField(null=True,
+                                blank=True,
+                                help_text='введите конец срока статуса',
+                                verbose_name='дата окончания статуса')
+    class Meta:
+        ordering = ['due_back']
+    def __str__(self):
+        return '%s %s %s' % (self.inv_nom, self.book, self.status)
+
+
+
