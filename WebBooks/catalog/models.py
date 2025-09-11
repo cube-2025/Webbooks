@@ -1,3 +1,4 @@
+from django.contrib.admin import display
 from django.db import models
 from django.urls import reverse
 
@@ -39,6 +40,7 @@ class Author(models.Model):
     photo = models.ImageField(upload_to='images',
                               help_text='Введите фото автора',
                               null=True, blank=True)
+
     def __str__(self):
         return self.last_name
 
@@ -73,6 +75,10 @@ class Book(models.Model):
     photo = models.ImageField(upload_to='images',
                               help_text='Введите изображение обложки',
                               verbose_name='Изображение обложки')
+    def display_author(self):
+        return ', '.join([author.last_name for author in
+                          self.author.all()])
+    display_author.short_description = 'Авторы'
     def __str__(self):
         return self.title
     def get_absolute_url(self):
