@@ -1,0 +1,115 @@
+{% extends "catalog/base.html" %}
+{% load static %}  {# Load the static tag to use static files #}
+
+{% block title %}Мир книг{% endblock title %}
+
+{% block header %}
+<div class="jumbotron jumbotron-fluid bg-light text-center py-5">
+    <div class="container">
+        <h1 class="display-4">Мир книг</h1>
+        <p class="lead">{{ text_head }}</p>
+    </div>
+</div>
+{% endblock header %}
+
+{% block content %}
+<div class="container">
+    <div class="row mb-4">
+        <div class="col-md-12">
+            <div class="card bg-light text-dark shadow-sm">
+                <div class="card-body">
+                    <div class="row align-items-center">
+                        <div class="col-md-4">
+                            <img src="{% static 'images/books_stack.jpg' %}" alt="A stack of beautiful books" class="img-fluid rounded">
+                        </div>
+                        <div class="col-md-8">
+                            <h2 class="card-title">Окунитесь в мир литературы с "Мир Книг"!</h2>
+                            <p class="card-text">
+                                Более 10,000 наименований книг на любой вкус и возраст. От классики до современных бестселлеров,
+                                фэнтези, научная литература, детские книги и многое другое!
+                            </p>
+                            <ul class="list-unstyled">
+                                <li><i class="fas fa-check-circle text-success mr-2"></i> Регулярные скидки и акции!</li>
+                                <li><i class="fas fa-check-circle text-success mr-2"></i> Удобная система поиска и фильтрации.</li>
+                                <li><i class="fas fa-check-circle text-success mr-2"></i> Быстрая доставка по всей стране.</li>
+                                <li><i class="fas fa-check-circle text-success mr-2"></i> Профессиональные консультации от наших экспертов.</li>
+                            </ul>
+                            <a href="#" class="btn btn-primary">Перейти в каталог</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="row mt-4">
+        <div class="col-md-12">
+            <h2>Сведения из базы данных</h2>
+        </div>
+    </div>
+
+    <div class="row">
+        <div class="col-md-4">
+            <div class="card text-white bg-primary mb-3">
+                <div class="card-body">
+                    <h5 class="card-title">Количество книг</h5>
+                                        <p class="card-text">{{ num_books }}</p>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-4">
+            <div class="card text-white bg-success mb-3">
+                <div class="card-body">
+                    <h5 class="card-title">На складе в наличии</h5>
+                    <p class="card-text">{{ num_instances }}</p>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-4">
+            <div class="card text-white bg-info mb-3">
+                <div class="card-body">
+                    <h5 class="card-title">Количество авторов</h5>
+                    <p class="card-text">{{ num_authors }}</p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="row mt-4">
+        <div class="col-md-12">
+            <h2>Книги</h2>
+        </div>
+    </div>
+
+    {% if num_books > 0 %}
+        <div class="row row-cols-1 row-cols-md-3 g-4">
+            {% for obj in books %}
+                <div class="col">
+                    <div class="card h-100 shadow-sm">
+                        {% if obj.photo %}
+                            <img src="{{ obj.photo.url }}" class="card-img-top book-image" alt="{{ obj.title }}">
+                        {% else %}
+                            <img src="{% static 'images/books_stack.jpg' %}" class="card-img-top book-image" alt="No Image Available">
+                        {% endif %}
+                        <div class="card-body d-flex flex-column">
+                            <h5 class="card-title">{{ obj.title }}</h5>
+                            <p class="card-text">Цена: {{ obj.price }} руб.</p>
+                            <a href="#" class="btn btn-primary mt-auto">Подробнее</a>
+                        </div>
+                        <div class="card-footer">
+                            <small class="text-muted">Added: {{ obj.created_at|date:"F d, Y" }}</small>
+                        </div>
+                    </div>
+                </div>
+            {% endfor %}
+        </div>
+    {% else %}
+        <div class="row">
+            <div class="col-md-12">
+                <div class="alert alert-warning text-center" role="alert">
+                    К сожалению, в данный момент книг нет в наличии. Пожалуйста, зайдите позже!
+                </div>
+            </div>
+        </div>
+    {% endif %}
+{% endblock content %}
