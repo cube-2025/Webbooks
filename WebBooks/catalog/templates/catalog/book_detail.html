@@ -1,0 +1,82 @@
+{% extends "catalog/base.html" %}
+
+{% block content %}
+
+<div class="container py-5">
+    <div class="row">
+        <div class="col-md-4">
+            <img src="{{book.photo.url}}" alt="{{ book.title }}" class="img-fluid rounded shadow-sm mb-3">
+            <a href="{{book.photo.url}}" class="btn btn-outline-secondary w-100" target="_blank">
+                <i class="bi bi-zoom-in me-1"></i> Показать увеличенное изображение
+            </a>
+        </div>
+
+        <div class="col-md-8">
+            <h1 class="display-4 fw-bold mb-3">{{ book.title }}</h1>
+
+            <p class="lead">
+                <strong>Автор:</strong>
+                {% for author in book.author.all %}
+                    <a href="#" class="text-decoration-none">{{author.first_name}} {{author.last_name}}</a>{% if not forloop.last %}, {% endif %}
+                {% endfor %}
+            </p>
+
+            <p class="fst-italic text-muted mb-4">{{ book.summary }}</p>
+
+            <div class="row row-cols-1 row-cols-md-2 g-4 mb-4">
+                <div class="col">
+                    <div class="card h-100 border-0 shadow-sm">
+                        <div class="card-body">
+                            <h6 class="card-subtitle mb-2 text-muted">Жанр</h6>
+                            <p class="card-text">{{ book.genre }}</p>
+                        </div>
+                    </div>
+                </div>
+                <div class="col">
+                    <div class="card h-100 border-0 shadow-sm">
+                        <div class="card-body">
+                            <h6 class="card-subtitle mb-2 text-muted">ISBN</h6>
+                            <p class="card-text">{{ book.isbn }}</p>
+                        </div>
+                    </div>
+                </div>
+                <div class="col">
+                    <div class="card h-100 border-0 shadow-sm">
+                        <div class="card-body">
+                            <h6 class="card-subtitle mb-2 text-muted">Язык</h6>
+                            <p class="card-text">{{ book.language }}</p>
+                        </div>
+                    </div>
+                </div>
+                <div class="col">
+                    <div class="card h-100 border-0 shadow-sm">
+                        <div class="card-body">
+                            <h6 class="card-subtitle mb-2 text-muted">Издательство</h6>
+                            <p class="card-text">{{ book.publisher }}</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div>
+                <h4 class="mb-3">Количество экземпляров книг</h4>
+                {% for copy in book.bookinstance_set.all %}
+                    <div class="card mb-3 shadow-sm">
+                        <div class="card-body">
+                            <p class="card-text">
+                                <strong>Инвентарный номер:</strong> {{copy.id}}
+                            </p>
+                            <p class="card-text">
+                                <strong>Статус экземпляра книги:</strong>
+                                <span class="{% if copy.status == 'a' %}text-success{% elif copy.status == 'm' %}text-warning{% elif copy.status == 'r' %}text-danger{% else %}text-muted{% endif %}">
+                                    {{ copy.get_status_display }}
+                                </span>
+                            </p>
+                        </div>
+                    </div>
+                {% endfor %}
+            </div>
+        </div>
+    </div>
+</div>
+{%endblock%}
