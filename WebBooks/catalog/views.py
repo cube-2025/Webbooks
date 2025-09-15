@@ -1,14 +1,23 @@
 from django.shortcuts import render
 from django.http import HttpResponse
-
+from .models import Book, Author, BookInstance
 
 from django.shortcuts import render
 
 def index(request):
     text_head = 'Книжный магазин'
-    text_body = 'Это содержимое главной страницы сайта'
+    books = Book.objects.all()
+    num_books = Book.objects.all().count()
+    num_instances = BookInstance.objects.all().count()
+    num_instances_available = BookInstance.objects.filter(
+        status__exact = 2).count()
+    author = Author.objects
+    num_authors = Author.objects.count()
     context = {
         'text_head': text_head,
-        'text_body': text_body
+        'books': books, 'num_books': num_books,
+        'num_instances': num_instances,
+        'num_instances_available': num_instances_available,
+        'author': author, 'num_authors':num_authors
     }
     return render(request, 'catalog/index.html', context)

@@ -11,8 +11,8 @@ SECRET_KEY = 'django-insecure-i)ug(f@p097bgvo2z&w!se_x62m_=2nn@%1p(ytye#paw)*vsq
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = []
-
+ALLOWED_HOSTS = ['*']
+CSRF_TRUSTED_ORIGINS = ['https://vbmck-178-207-11-125.a.free.pinggy.link']
 
 # Application definition
 
