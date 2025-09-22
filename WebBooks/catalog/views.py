@@ -30,3 +30,7 @@ class BookDetailView(DetailView):
     model = Book
     context_object_name = 'book'
 
+class AuthorListView(ListView):
+    model = Author
+class AuthorDetailView(DetailView):
+    model = Author

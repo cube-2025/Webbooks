@@ -14,12 +14,14 @@
         <div class="col-md-8">
             <h1 class="display-4 fw-bold mb-3">{{ book.title }}</h1>
 
-            <p class="lead">
-                <strong>Автор:</strong>
+            <p><strong>Автор:</strong></p>
+            {% if book.author.all %}
                 {% for author in book.author.all %}
-                    <a href="#" class="text-decoration-none">{{author.first_name}} {{author.last_name}}</a>{% if not forloop.last %}, {% endif %}
+                    <a href="{% url 'authors-detail' pk=author.id %}">{{ author.first_name }} {{ author.last_name }}</a>
                 {% endfor %}
-            </p>
+            {% else %}
+            <p>Нет авторов для этой книги.</p>
+            {% endif %}
 
             <p class="fst-italic text-muted mb-4">{{ book.summary }}</p>
 
