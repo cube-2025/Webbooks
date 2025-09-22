@@ -26,4 +26,7 @@ def index(request):
 class BookListView(ListView):
     model = Book
     context_object_name = 'books'
+class BookDetailView(DetailView):
+    model = Book
+    context_object_name = 'book'
 
